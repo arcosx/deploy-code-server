@@ -32,6 +32,32 @@ RUN sudo chown -R coder:coder /home/coder/.local
 # Copy files: 
 # COPY deploy-container/myTool /home/coder/myTool
 
+# Set the Begin ENV
+RUN sudo apt-get install -y --no-install-recommends \
+	vim \
+	curl \ 
+	git   \ 
+	wget   \ 
+	make	\ 
+	man 	\
+	python3 \
+	python3-dev \
+	python3-pip \
+	python3-setuptools \
+	openssh-client \
+	gnupg2 \
+	build-essential \
+	rsync
+
+ENV GOLANG_VERSION 1.16.2
+ENV GOLANG_DOWNLOAD_URL https://mirrors.ustc.edu.cn/golang/go$GOLANG_VERSION.linux-amd64.tar.gz
+RUN curl -fsSL "$GOLANG_DOWNLOAD_URL" -o golang.tar.gz \
+	&& rm -rf /usr/local/go \
+	&& tar -C /usr/local -xzf golang.tar.gz \
+	&& rm golang.tar.gz
+ENV GOPATH /home/go
+ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
+
 # -----------
 
 # Port
